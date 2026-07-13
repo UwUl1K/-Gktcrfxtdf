@@ -1,0 +1,58 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw = new PrintWriter(System.out);
+        
+        int n = Integer.parseInt(br.readLine().trim());
+        int[][] c = new int[n][n];
+        
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < n; j++) {
+                c[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        
+        // dp[mask][last] = количество способов рассадить гостей из mask, 
+        // где последний гость - last
+        long[][] dp = new long[1 << n][n];
+        
+        // Базовый случай: начинаем с любого гостя
+        for (int i = 0; i < n; i++) {
+            dp[1 << i][i] = 1;
+        }
+        
+        // Перебираем все маски
+        for (int mask = 0; mask < (1 << n); mask++) {
+            for (int last = 0; last < n; last++) {
+                // Проверяем, есть ли last в mask
+                if ((mask & (1 << last)) == 0) continue;
+                if (dp[mask][last] == 0) continue;
+                
+                // Пробуем добавить следующего гостя
+                for (int next = 0; next < n; next++) {
+                    // Проверяем, что next ещё не посажен
+                    if ((mask & (1 << next)) != 0) continue;
+                    // Проверяем совместимость
+                    if (c[last][next] == 0) continue;
+                    
+                    int newMask = mask | (1 << next);
+                    dp[newMask][next] += dp[mask][last];
+                }
+            }
+        }
+        
+        // Суммируем все способы, где все гости посажены
+        long answer = 0;
+        int fullMask = (1 << n) - 1;
+        for (int i = 0; i < n; i++) {
+            answer += dp[fullMask][i];
+        }
+        
+        pw.println(answer);
+        pw.flush();
+    }
+}
