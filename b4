@@ -1,0 +1,30 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw = new PrintWriter(System.out);
+        
+        int t = Integer.parseInt(br.readLine().trim());
+        
+        while (t-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            long n = Long.parseLong(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
+            
+            st = new StringTokenizer(br.readLine());
+            long mx = 0;
+            
+            for (int i = 0; i < k; i++) {
+                long val = Long.parseLong(st.nextToken());
+                mx = Math.max(mx, val);
+            }
+            
+            long ans = 2 * (n - mx) - (k - 1);
+            pw.println(ans);
+        }
+        
+        pw.flush();
+    }
+}
