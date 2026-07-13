@@ -1,0 +1,27 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw = new PrintWriter(System.out);
+        
+        int t = Integer.parseInt(br.readLine().trim());
+        
+        while (t-- > 0) {
+            int x = Integer.parseInt(br.readLine().trim());
+            
+            // Чтобы максимизировать min(x, y), нужно выбрать y >= x
+            // Тогда min(x, y) = x (максимально возможное значение)
+            // Выбираем y = x + 1, но не больше 67
+            int y = Math.min(x + 1, 67);
+            
+            pw.println(y);
+        }
+        
+        pw.flush();
+    }
+}
